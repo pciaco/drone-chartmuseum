@@ -7,12 +7,23 @@ The plugin is a simple wrapper script around the official [helm-push plugin](htt
 ## Usage
 
 ```yaml
-pipeline:
-  publish_charts:
-    image: quay.io/honestbee/chartmuseum:v1
+---
+kind: pipeline
+name: default
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: publish_charts
+  pull: if-not-exists
+  image: quay.io/honestbee/chartmuseum:v1
+  settings:
     helm_repo: http://helm-charts.example.com
-    when:
-      branch: [master]
+  when:
+    branch:
+    - master
 ```
 
 ## Pushing Duplicate Versions
